@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0b6b5e">
+<title>הפיליפינים 2026 — התוכנית שלי</title>
+<style>
+  :root{
+    --cebu:#0b6b5e; --moal:#1f7a8c; --bohol:#2a9d8f; --bora:#e76f51; --seda:#6a4c93;
+    --flight:#3a6ea5; --bg:#f4f6f8; --card:#ffffff; --ink:#1f2a30; --muted:#5d6b73;
+    --line:#e3e8ec; --warn:#c0392b; --warnbg:#fdecea; --ok:#1e8449; --okbg:#e8f6ee;
+    --pend:#b7791f; --pendbg:#fdf3e2;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"Heebo",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.55; font-size:16px;
+    padding-bottom:78px;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 14px;}
+
+  header.hero{
+    background:linear-gradient(135deg,#0b6b5e,#2a9d8f 55%,#e76f51);
+    color:#fff; padding:26px 16px 22px; text-align:center;
+  }
+  .hero h1{margin:0 0 4px;font-size:1.5rem;letter-spacing:-.3px;}
+  .hero .sub{opacity:.95;font-size:.95rem;}
+  .hero .meta{margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+  .chip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);
+    padding:5px 11px;border-radius:999px;font-size:.8rem;font-weight:600;}
+
+  /* tabs */
+  nav.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);
+    display:flex;z-index:50;box-shadow:0 -3px 14px rgba(0,0,0,.06);}
+  nav.tabs button{flex:1;border:0;background:none;padding:9px 4px 8px;cursor:pointer;
+    color:var(--muted);font-size:.72rem;font-weight:600;display:flex;flex-direction:column;
+    align-items:center;gap:3px;font-family:inherit;transition:color .15s;}
+  nav.tabs button .ic{font-size:1.25rem;line-height:1;}
+  nav.tabs button.active{color:var(--cebu);}
+
+  section.view{display:none;padding-top:16px;}
+  section.view.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  h2.vtitle{font-size:1.15rem;margin:4px 2px 12px;}
+
+  /* day card */
+  .day{background:var(--card);border-radius:16px;margin-bottom:12px;overflow:hidden;
+    box-shadow:0 1px 4px rgba(20,40,50,.07);border:1px solid var(--line);}
+  .day .dhead{display:flex;align-items:center;gap:11px;padding:13px 14px;cursor:pointer;
+    border-right:6px solid var(--cebu);}
+  .day .dnum{flex:0 0 auto;width:44px;min-height:44px;padding:4px 2px;border-radius:11px;background:var(--cebu);
+    color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    line-height:1;}
+  .day .dnum .d{font-size:1.05rem;font-weight:800;}
+  .day .dnum .m{font-size:.6rem;opacity:.9;margin-top:1px;}
+  .day .dnum .w{font-size:.62rem;font-weight:700;opacity:.95;margin-top:3px;border-top:1px solid rgba(255,255,255,.35);padding-top:2px;}
+  .day .dtitle{flex:1;min-width:0;}
+  .day .dtitle .loc{font-weight:700;font-size:1rem;}
+  .day .dtitle .summ{color:var(--muted);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .day .dtitle .hotelline{font-size:.74rem;color:var(--muted);margin-top:2px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .day .arrow{color:var(--muted);transition:transform .2s;font-size:.9rem;}
+  .day.open .arrow{transform:rotate(180deg);}
+  .day .body{display:none;padding:0 14px 14px;}
+  .day.open .body{display:block;}
+
+  .row{display:flex;gap:8px;padding:9px 0;border-top:1px solid var(--line);font-size:.92rem;align-items:flex-start;}
+  .row .lbl{flex:0 0 30px;font-size:1.05rem;text-align:center;}
+  .row .val{flex:1;}
+  .row .val b{font-weight:700;}
+  .pill{display:inline-block;padding:2px 8px;border-radius:7px;font-size:.74rem;font-weight:700;margin-inline-start:4px;}
+  .pill.paid{background:var(--okbg);color:var(--ok);}
+  .pill.cash{background:var(--pendbg);color:var(--pend);}
+  .pill.pend{background:var(--warnbg);color:var(--warn);}
+  .fc{background:#ffe27a;color:#6b4e00;border-radius:5px;padding:1px 6px;font-weight:800;white-space:nowrap;}
+  a.tel,a.mail,a.lnk{color:var(--flight);text-decoration:none;font-weight:600;direction:ltr;unicode-bidi:isolate;display:inline-block;}
+  a.tel:active{opacity:.6;}
+  .note{background:#f7f9fa;border-radius:9px;padding:8px 10px;font-size:.83rem;color:var(--muted);margin-top:7px;}
+  .note.warn{background:var(--warnbg);color:var(--warn);}
+
+  /* contacts */
+  .contact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px;
+    box-shadow:0 1px 3px rgba(20,40,50,.05);}
+  .contact h3{margin:0 0 3px;font-size:1rem;}
+  .contact .meta{color:var(--muted);font-size:.8rem;margin-bottom:7px;}
+  .contact .acts{display:flex;flex-wrap:wrap;gap:7px;}
+  .contact .acts a{flex:1 1 auto;text-align:center;background:#eef4f3;color:var(--cebu);
+    border-radius:9px;padding:8px;font-weight:700;font-size:.84rem;text-decoration:none;min-width:46%;}
+
+  /* budget */
+  .btot{background:linear-gradient(135deg,#0b6b5e,#2a9d8f);color:#fff;border-radius:16px;
+    padding:18px;text-align:center;margin-bottom:14px;}
+  .btot .big{font-size:2rem;font-weight:800;}
+  .btot .lab{opacity:.9;font-size:.85rem;}
+  .bitem{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;
+    margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+  .bitem .bn{flex:1;}
+  .bitem .bn .t{font-weight:700;font-size:.95rem;}
+  .bitem .bn .s{color:var(--muted);font-size:.78rem;}
+  .bitem .amt{font-weight:800;font-size:1rem;white-space:nowrap;}
+
+  /* cash */
+  .cdest{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(20,40,50,.06);}
+  .cdest .chead{color:#fff;padding:11px 13px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+  .cdest .chead .ct{font-weight:800;font-size:1.02rem;}
+  .cdest .chead .cs{font-size:.78rem;opacity:.92;}
+  .cdest .chead .camt{font-weight:800;font-size:1rem;white-space:nowrap;text-align:left;}
+  .cdest .chead .camt .php{display:block;font-size:.74rem;opacity:.92;font-weight:600;}
+  .cpaid{background:#eef4f3;color:var(--muted);font-size:.78rem;padding:6px 13px;border-bottom:1px solid var(--line);}
+  .cday{padding:8px 13px;border-bottom:1px solid var(--line);}
+  .cday:last-child{border-bottom:0;}
+  .cday .cdh{display:flex;justify-content:space-between;font-weight:700;font-size:.9rem;margin-bottom:3px;}
+  .cday .cdh .dt{color:var(--cebu);}
+  .ci{display:flex;justify-content:space-between;font-size:.85rem;color:var(--ink);padding:1px 0;}
+  .ci span:first-child{color:var(--muted);}
+  .cnote{font-size:.78rem;color:var(--pend);padding:6px 13px;background:var(--pendbg);}
+  .cc{font-size:.78rem;opacity:.85;}
+  .cfx{font-size:.8rem;color:#1e6b5e;background:#e8f6ee;padding:6px 13px;border-bottom:1px solid var(--line);}
+
+  /* quotes */
+  .qtour{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(20,40,50,.06);}
+  .qhead{color:#fff;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;}
+  .qhead .ct{font-weight:800;}
+  .qhead .cs{font-size:.8rem;opacity:.92;}
+  .qbody{padding:8px 10px;}
+  .qrow{display:flex;gap:6px;align-items:flex-start;padding:5px 5px;border-radius:8px;border:1.5px solid transparent;transition:background .15s;}
+  .qnamecol{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+  .qrnote{font-size:.72rem;color:var(--muted);line-height:1.45;padding:0 3px;}
+  .qmedal{font-size:.92rem;}
+  .qrow.chosen{background:#cdf2dc;border:1.5px solid var(--ok);box-shadow:0 1px 5px rgba(30,132,73,.18);}
+  .qrow.chosen .qname,.qrow.chosen .qprice{font-weight:800;border-color:var(--ok);}
+  .qinfo{background:#fff8e6;border:1px solid #f0e2b8;border-radius:9px;padding:8px 10px;margin:0 10px 8px;font-size:.8rem;line-height:1.5;color:#6b5800;}
+  .qcb{width:20px;height:20px;flex:0 0 auto;accent-color:var(--ok);}
+  .qname{width:100%;box-sizing:border-box;min-width:0;border:1px solid var(--line);border-radius:7px;padding:6px 8px;font-size:.84rem;font-family:inherit;background:#fff;color:var(--ink);}
+  .qprice{width:96px;flex:0 0 auto;border:1px solid var(--line);border-radius:7px;padding:6px 8px;font-size:.84rem;font-family:inherit;text-align:center;background:#fff;color:var(--ink);}
+  .qmsg{background:#eef4f3;border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:.86rem;line-height:1.55;margin-bottom:14px;}
+  .lisatxt{flex:1;font-size:.86rem;}
+  .lisaprice{color:var(--muted);font-size:.82rem;}
+  .qsub{font-weight:700;color:var(--muted);font-size:.88rem;margin:14px 2px 8px;}
+  .qnote{font-size:.74rem;opacity:.95;font-weight:600;margin-top:2px;}
+
+  /* action items */
+  .task{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;
+    display:flex;gap:11px;align-items:flex-start;}
+  .task input{width:22px;height:22px;margin-top:2px;flex:0 0 auto;accent-color:var(--cebu);}
+  .task .tx{flex:1;}
+  .task .tx .tt{font-weight:700;font-size:.95rem;}
+  .task .tx .td{color:var(--muted);font-size:.82rem;margin-top:2px;}
+  .task .due{font-size:.74rem;font-weight:800;padding:3px 8px;border-radius:7px;white-space:nowrap;flex:0 0 auto;}
+  .due.red{background:var(--warnbg);color:var(--warn);}
+  .due.amber{background:var(--pendbg);color:var(--pend);}
+  .due.green{background:var(--okbg);color:var(--ok);}
+  .due.gray{background:#eceff1;color:var(--muted);}
+  .donesep{font-size:.78rem;font-weight:700;color:var(--muted);text-align:center;margin:8px 0 6px;padding-top:8px;border-top:1px dashed var(--line);}
+  .task.done{opacity:.5;}
+  .task.done .tt{text-decoration:line-through;}
+  .urgent-banner{background:var(--warnbg);color:var(--warn);border:1px solid #f3c4bd;border-radius:12px;
+    padding:11px 13px;font-size:.88rem;font-weight:600;margin-bottom:14px;}
+  .legend{font-size:.76rem;color:var(--muted);text-align:center;margin:14px 2px 4px;}
+  .foot{text-align:center;color:var(--muted);font-size:.74rem;padding:18px 4px 8px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>🇵🇭 הפיליפינים 2026</h1>
+  <div class="sub">Cebu · Moalboal · Bohol · Boracay · Cebu</div>
+  <div class="meta">
+    <span class="chip">25.7 – 16.8</span>
+    <span class="chip">22 ימים</span>
+    <span class="chip">👩‍👦‍👦 3 נוסעים</span>
+    <span class="chip">~$9,510</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ DAYS ============ -->
+  <section class="view active" id="v-days">
+    <h2 class="vtitle">יום‑יום</h2>
+    <div id="days"></div>
+    <p class="legend">לחצי על יום כדי לפתוח את כל הפרטים</p>
+  </section>
+
+  <!-- ============ BUDGET ============ -->
+  <section class="view" id="v-budget">
+    <h2 class="vtitle">סה״כ עלות הטיול</h2>
+    <div class="btot">
+      <div class="big">$9,510</div>
+      <div class="lab">אומדן כולל לטיול · 3 נוסעים</div>
+    </div>
+    <div id="budget"></div>
+    <p class="legend">סכומי הלינה והטיסות מאומתים מההזמנות · אוכל/עיסויים = אומדן מהאקסל</p>
+  </section>
+
+  <!-- ============ CASH ============ -->
+  <section class="view" id="v-cash">
+    <h2 class="vtitle">מזומן למעטפות</h2>
+    <div class="btot" style="background:linear-gradient(135deg,#1e8449,#27ae60)">
+      <div class="big" id="cashGrand">—</div>
+      <div class="lab">סה"כ מזומן להכין · 3 נוסעים</div>
+    </div>
+    <div id="cash"></div>
+    <p class="legend">💳 = אפשר גם בכרטיס אשראי · השאר מזומן בלבד · שער ~₱57 ל‑$1 (לאמת ולהמיר ~5% בעודף)</p>
+  </section>
+
+  <!-- ============ CONTACTS ============ -->
+  <section class="view" id="v-contacts">
+    <h2 class="vtitle">אנשי קשר</h2>
+    <div id="contacts"></div>
+  </section>
+
+  <!-- ============ TASKS ============ -->
+  <section class="view" id="v-tasks">
+    <h2 class="vtitle">משימות ודדליינים</h2>
+    <div class="urgent-banner" id="urgentBanner"></div>
+    <div id="tasks"></div>
+    <p class="legend">הסימון נשמר במכשיר שלך</p>
+  </section>
+
+  <!-- ============ HOTELS ============ -->
+  <section class="view" id="v-hotels">
+    <h2 class="vtitle">מלונות והזמנות</h2>
+    <div id="hotels"></div>
+  </section>
+
+  <!-- ============ QUOTES ============ -->
+  <section class="view" id="v-quotes">
+    <h2 class="vtitle">השוואת הצעות מחיר — נהגים</h2>
+    <div class="qmsg"><b>📩 הודעה מרוכזת לנהג (3 הסיורים) — copy/paste:</b><br>"Hi! We got a warm recommendation about you 😊 We're a family of 3 (1 adult + 2 teenagers) staying at Pyramid Beach Resort, Panglao. We'd love to book you for three day-tours: (1) Countryside Tour on Aug 2 — Chocolate Hills, Tarsier Sanctuary, Loboc River, Zipline; (2) Balicasag Island hopping on Aug 3 — sea turtles, snorkeling, marine sanctuary (please include the boat + fees); (3) Waterfalls Day on Aug 4 — Ingkumhan Falls & Twin Falls. Could you please send a price for each tour separately? Pickup and drop-off from Pyramid Beach Resort, Panglao. Also, how far in advance do we need to confirm to lock in the price with you? Thank you so much! 🙏"</div>
+    <div class="qmsg"><b>📩 הודעת הבהרה — מה בדיוק כלול — copy/paste:</b><br>"Hi again 😊 Thank you for the prices! Before we decide, I'd like to understand exactly what's included for each tour. — Countryside Tour (Aug 2) & Waterfalls Day (Aug 4): Is your price for the car + driver (transport) only? Do we pay the entrance/activity fees ourselves directly at each site (Tarsier Sanctuary, Chocolate Hills, Loboc River cruise, zipline, waterfalls)? Roughly how much are these entrance fees per person? — Balicasag Island hopping (Aug 3): Does your price include everything — the boat, the mandatory snorkeling guide, and all fees (Balicasag sanctuary, environmental fee, Virgin Island, snorkeling mask)? Is anything paid separately on the spot? Thank you so much! 🙏"</div>
+    <div id="quotes"></div>
+    <p class="legend">רשמי את המחיר שכל נהג נתן · סמני ✓ את מי שבחרת · הכל נשמר במכשיר</p>
+  </section>
+
+  <p class="foot">נבנה מתוך קבצי היומן וההזמנות שלך · אפשר לפתוח גם בלי אינטרנט</p>
+</div>
+
+<nav class="tabs">
+  <button class="active" data-v="days"><span class="ic">🗓️</span>ימים</button>
+  <button data-v="cash"><span class="ic">💵</span>מזומן</button>
+  <button data-v="tasks"><span class="ic">✅</span>משימות</button>
+  <button data-v="hotels"><span class="ic">🏨</span>מלונות</button>
+  <button data-v="quotes"><span class="ic">🧾</span>הצעות</button>
+  <button data-v="contacts"><span class="ic">📞</span>קשר</button>
+  <button data-v="budget"><span class="ic">💰</span>סה״כ</button>
+</nav>
+
+<script>
+/* ===================== DATA ===================== */
+const C = {cebu:'var(--cebu)',moal:'var(--moal)',bohol:'var(--bohol)',bora:'var(--bora)',seda:'var(--seda)',flight:'var(--flight)'};
+
+const DAYS = [
+ {d:'25',m:'יול',color:C.flight,loc:'יציאה: TLV ← DXB',summ:'טיסת המראה 17:50',rows:[
+   {i:'✈️',v:'<b>TLV → DXB</b> · Emirates EK 2471 / flydubai FZ1126<br>המראה 17:50 · נחיתה 22:35 · 3ש 45ד'},
+   {i:'🎫',v:'מושבים 11A 11B 11C · 30 ק"ג כל אחד'},
+   {i:'🔖',v:'Emirates: <b>LIXHZ2</b> · flydubai: <b>AXRR12</b>'},
+   {i:'⏱️',v:'חניית ביניים ב‑DXB: 4ש 20ד'},
+   {i:'📋',v:'לוודא: רישום eTravel מוכן (etravel.gov.ph, 72ש לפני) · סים AirAlo פעיל (קוד Mizrah15)',warn:1},
+ ]},
+ {d:'26',m:'יול',color:C.cebu,loc:'Cebu City',summ:'נחיתה 16:20 · The Noble Cebu',rows:[
+   {i:'✈️',v:'<b>DXB → CEB</b> · Emirates EK0338 · 02:55 → 16:20 · 9ש 25ד · מושבים 14A 14B 14C'},
+   {i:'🚖',v:'<b>שדה התעופה → Cebu City</b> (25-45 דק\') · <b>מהתור הרשמי בטרמינל</b><br>מומלץ: <b>מונית לבנה</b> ~$6-7 (הכי זול, מונה) או <b>Grab</b> $6-11 (מחיר קבוע, רכב נחמד) · מונית צהובה $8-9 (נוחה אך יקרה) · להתעקש על מונה ולהימנע מנהגים באולם הנכנסים'},
+   {i:'💱',v:'<b>המרת כסף:</b> בשדה — רק סכום קטן לטקסי/התחלה (שער פחות טוב). את הרוב להמיר בעיר — שער טוב ב‑Rustans/DROP BY FOREX בקניון Ayala, או בסופרים גדולים (SM, Metro). אפשר גם למשוך ב‑ATM'},
+   {i:'📱',v:'לקנות סים SMART/Globe בשדה התעופה'},
+   {i:'🌆',v:'<b>היום:</b> ערב רגוע · ארוחת ערב ב‑Ayala Mall / IT Park'},
+   {i:'🏨',v:'<b>The Noble Cebu</b> (לילה 1) <span class="pill paid">שולם $67.34</span><br>צ\'ק‑אין 14:00 · אזור IT Park · הזמנה 1670796188'},
+   {i:'📞',v:'מלון: <a class="tel" href="tel:+639171179360">+63 917 117 9360</a>'},
+   {i:'✅',v:'הוזמן: לא מעשנים, מיטות נפרדות, קומה גבוהה · <span class="fc">ביטול חינם עד 24.7</span>'},
+ ]},
+ {d:'27',m:'יול',color:C.moal,loc:'מעבר → Moalboal',summ:'נהג 09:00 · Pescadores',rows:[
+   {i:'🚐',v:'<b>העברה פרטית Cebu → Moalboal</b> · 2.5-3 שעות · רכב פרטי (3 נוסעים)<br>איסוף 09:00 מ‑The Noble · נהגת: <b>Lisa</b> · ₱2,500 (~$42) · <b>תשלום מזומן בהגעה</b>'},
+   {i:'📞',v:'לאשר מחדש שבוע לפני (עד 19.7) — לבקש שם הנהג + איפה נפגשים בלובי'},
+   {i:'💬',v:'<b>הודעת אישור ל‑Lisa:</b> "Hi Lisa! This is Dganit. Just confirming our private transfer from Cebu City to Moalboal on July 27. Pick-up: The Noble Cebu Hotel, 09:00 AM · 3 passengers · ₱2,500 total · Drop-off: Pescadores Suites Moalboal. Please confirm the driver\'s name and contact, and where we meet in the lobby. Thank you!"'},
+   {i:'🏨',v:'<b>Pescadores Suites</b> (4 לילות) <span class="pill paid">שולם $243</span><br>צ\'ק‑אין 14:00 · הזמנה 1671641502 · <span class="fc">ביטול חינם עד 22.7</span>'},
+   {i:'📞',v:'<a class="tel" href="tel:+63325056733">(032) 505 6733</a> · WhatsApp <a class="tel" href="tel:+639190799353">+63 919 079 9353</a>'},
+   {i:'🏖️',v:'<b>היום:</b> חוף Panagsama · שנרקול קל · ארוחת ערב בשקיעה · ציוד שנרקול חינם מהמלון'},
+   {i:'✅',v:'אושר: ארוחת בוקר ל‑3 · חדר ליד החניה = שקט יותר (יש להקה חיה ליד המסעדה!) · אין החזר מצד המלון — להישען על ביטוח + Agoda'},
+   {i:'🍽️',v:'<b>מסעדות מומלצות במוהלבואל:</b> Altrove (פיצה איטלקית קלילה) · Smooth Cafe · Hungry Monkeys (תאילנדי מצוין, מחירים מעולים)'},
+   {i:'🧺',v:'<b>כביסה:</b> 365 Laundry · Judith\'s Laundry · SoapBox Laundry · Chill Laundry · Dropshot Laundry'},
+   {i:'💵',v:'עלות היום: אוכל ~$35 · עיסוי ~$30'},
+ ]},
+ {d:'28',m:'יול',color:C.moal,loc:'Moalboal',summ:'Sardine Run + צבי ים',rows:[
+   {i:'⭐',v:'<b>חובה: Sardine Run + צבי ים</b> · שנרקול בוקר · אחר צהריים רגוע'},
+   {i:'📍',v:'מיקום הסרדינים: Nikko\'s Resort / Savedra Dive Center · Panagsama House Reef'},
+   {i:'🤿',v:'מדריך אופציונלי: ~$30'},
+   {i:'💵',v:'עלות היום: אוכל ~$35'},
+ ]},
+ {d:'29',m:'יול',color:C.moal,loc:'Moalboal',summ:'Kawasan Canyoneering',rows:[
+   {i:'⭐',v:'<b>חוויית השיא: Kawasan Canyoneering</b> · קפיצות מצוקים · נהר הקניון · יום הרפתקה'},
+   {i:'ℹ️',v:'משך 4-5 שעות · התחלה 08:00-08:30 · קפיצות 2-12מ\' (אופציונלי)<br>כולל: ביטוח, מדריך, קסדה, אפוד, מים, ארוחת צהריים'},
+   {i:'👟',v:'ללבוש: מכנס מתייבש מהר + נעלי מים סגורות'},
+   {i:'💵',v:'מחיר: ₱2,300 לאדם (~$40) · <b>תשלום מזומן</b> · להזמין שבוע מראש (Lisa)'},
+   {i:'💬',v:'<b>הודעת אישור ל‑Lisa:</b> "Hi Lisa! Confirming our Kawasan Canyoneering tour for July 29 (3 people). Small Group · Start 08:00-08:30 AM · 4-5 hours · ₱2,300 per person · Includes insurance, guide, helmet, vest, water, lunch. Please confirm pickup time and meeting point, and send the driver/guide\'s name and contact. Thank you!"'},
+   {i:'💵',v:'עלות היום: אוכל ~$35 · פעילות ~$96 (ל‑3)'},
+ ]},
+ {d:'30',m:'יול',color:C.moal,loc:'Moalboal',summ:'White Beach · רגיעה',rows:[
+   {i:'🏝️',v:'<b>White Beach</b> · יום רגיעה · משקאות קוקוס · ארוחת ערב בשקיעה'},
+   {i:'💵',v:'עלות היום: אוכל ~$35 · עיסוי ~$30'},
+   {i:'🎒',v:'לארוז — מחר השכמה מוקדמת מאוד (כרישי לוויתן)',warn:1},
+ ]},
+ {d:'31',m:'יול',color:C.bohol,loc:'כרישי לוויתן → Panglao',summ:'איסוף 03:00 · מעבורת ל‑Panglao',rows:[
+   {i:'⭐',v:'<b>כרישי לוויתן ב‑Oslob</b> — חובה! · עלות ~$123 ל‑3'},
+   {i:'🚐',v:'<b>חלק 1 — נסיעה עם הנהג של Lisa (כיוון אחד · ממשיכים הלאה, לא חוזרים):</b> יציאה 03:00 (קבוצתי · ₱5,700 / ~$96 ל‑3) או 04:00 (פרטי · ₱7,200 / ~$123 ל‑3) · זמן נסיעה 1-1.75ש'},
+   {i:'🐋',v:'<b>בוקר ב‑Oslob:</b> הגעה 05:30-06:00 · בריפינג + ציוד · שחייה עם הכרישים 06:30-07:30 (20-30 דק\' במים) · כולל ציוד/בריפינג/מדריך/דמי כניסה · מקלחת+בוקר 07:30-08:30'},
+   {i:'🚐',v:'<b>מעבר לנמל</b> (לאשר עם Lisa): יציאה 08:30-09:00 מ‑Oslob · 20-30 דק\' · הורדה ישירה ב‑Quartel Beach / Oslob Ferry Terminal'},
+   {i:'⛴️',v:'<b>חלק 2 — מעבורת Oslob → Panglao (Momo Beach)</b> <span class="pill paid">שולם $52 · 12go</span><br>להגיע שעה לפני (10:30) · עלייה 11:00 · יציאה 11:30 · הגעה 13:00-13:30 · 1-1.5ש · הזמנה ABE09387'},
+   {i:'⚠️',v:'יד בלבד למעבורת (₱100 לעודף) · <span class="fc">ביטול חינם עד 28.7</span> · ההפלגה בזמן ותלויה במזג הים (אוגוסט)',warn:1},
+   {i:'🚖',v:'<b>מהנמל למלון:</b> נהג מתואם מול המלון · 13:30-14:30 · 30-40 דק\' · הגעה ~14:30-15:00'},
+   {i:'💬',v:'<b>הודעת אישור ל‑Lisa (כרישי לוויתן) — מוכנה לשליחה:</b> "Hi Lisa! Confirming the Oslob Whale Shark tour + transfer for July 31 for 3 people. SMALL group (₱1,900 pp) · Pickup 03:00 AM from Pescadores Suites Moalboal · Includes whale shark snorkeling. Afterwards please drop us at Quartel Beach, Oslob by 10:30 — we have the 11:30 Apekoptravel high-speed ferry to Momo Beach, Panglao. Please confirm availability, pickup time, and the guide/driver\'s name and contact. Thank you!"'},
+   {i:'🏨',v:'<b>Pyramid Beach Resort</b> · Panglao/Bohol (6 לילות) <span class="pill paid">שולם ₱31,556 (~$554)</span><br>צ\'ק‑אין 14:00 · Booking.com · הזמנה 1674376109 · <span class="fc">ביטול חינם עד 16.7</span>'},
+   {i:'✅',v:'לוודא מול המלון: מקום שינה ל‑3 · האם החדר בשתי קומות · נוף לבריכה · חדר שקט · העברה מהנמל'},
+   {i:'💬',v:'<b>הודעה למלון — מוכנה לשליחה:</b> "Hi! I have a reservation at Pyramid Beach Resort (Booking.com ref 1674376109) for 6 nights, 31 July – 6 August 2026, for 3 guests (1 adult + 2 teenagers). Before arrival I\'d like to confirm: (1) that our room has sleeping space for 3 — please confirm the bed configuration / whether an extra bed is included; (2) whether the room is spread over two floors (split-level); (3) whether the room has a pool view; (4) if possible, please allocate us a quiet room; (5) do you offer a transfer from Momo Beach pier (or Tagbilaran) to the resort, and if so what is the cost? We arrive by ferry around 13:00-13:30 on 31 July. Also, is there anything else we should know before arrival (check-in time, deposit)? Thank you so much!"'},
+   {i:'💵',v:'<b>עלות היום (ל‑3) — חבילת Lisa:</b> קבוצתי ₱5,700 (~$96) · פרטי ₱7,200 (~$123) · לא כולל אוכל ~$45'},
+ ]},
+ {d:'1',m:'אוג',color:C.bohol,loc:'Bohol / Panglao',summ:'יום רגיעה · Alona Beach',rows:[
+   {i:'🌅',v:'<b>יום רגיעה</b> — להתאושש מהקימה המוקדמת של כרישי הלוויתן'},
+   {i:'🏖️',v:'Dumaluan / Alona Beach · בריכה · ספא · קוקטיילים בשקיעה'},
+   {i:'🍽️',v:'<b>מסעדות מומלצות בבוהול:</b> Mosa · Comoda · Burger Bros · Lekker Garden · Kamaya · Shaka · MIST Restaurant'},
+   {i:'🧺',v:'<b>כביסה:</b> 365 Laundry · Laundry Mama'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · פעילות ~$20 · עיסוי ~$30'},
+ ]},
+ {d:'2',m:'אוג',color:C.bohol,loc:'Bohol / Panglao',summ:'Countryside Tour',rows:[
+   {i:'⭐',v:'<b>חובה: סיור Countryside</b> · Chocolate Hills · טרסיירים · נהר Loboc · Zipline'},
+   {i:'👤',v:'<b>צריך רק נהג</b> — בכל אתר יש מדריך/צוות הכלול בכניסה (טרסיירים: מדריך כלול ב‑₱150-170). האגרות משולמות בכל אתר.'},
+   {i:'🚙',v:'<b>Dixon ₱2,500</b> (רכב+נהג בלבד · <a class="tel" href="tel:+639158047286">+63 915 804 7286</a>) · השוואת נהגים → לשונית הצעות · דמי כניסה משולמים באתר'},
+   {i:'➕',v:'<b>תוספות אופציונליות:</b> Loboc Zipline ₱350-₱600 לאדם · שייט נהר Loboc עם ארוחה ₱850 לאדם · Butterfly Garden · קיאקים במקום שייט'},
+   {i:'💬',v:'<b>הודעה לנהג (הצעת מחיר) — copy/paste:</b> "Hi! We are a family of 3 staying at Pyramid Beach Resort, Panglao. On August 2 we\'d like a full-day Countryside Tour: Chocolate Hills, Tarsier Sanctuary, Loboc River, and Zipline. Could you send your price (driver only, and driver + entrance fees), pickup time, and what\'s included? Pickup from our hotel. Thank you!"'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · נהג (Dixon) ₱2,500 + כניסות ~₱6,450 (כולל שייט Loboc + זיפליין) ≈ $157'},
+ ]},
+ {d:'3',m:'אוג',color:C.bohol,loc:'Bohol / Panglao',summ:'Balicasag · צבי ים',rows:[
+   {i:'⭐',v:'<b>חובה: אי Balicasag</b> · צבי ים · Island hopping · בריכה וספא'},
+   {i:'👤',v:'<b>סיור סירה</b> (לא נהג רגיל) — מדריך שנרקול <b>חובה</b>, כלול בדמי הסביבה ₱300. להזמין חבילת סירה כוללת.'},
+   {i:'🛵',v:'טוקטוק לחוף Alona 06:00 (₱150) · חזרה למלון 11:00-12:00 (₱150)'},
+   {i:'🚤',v:'<b>פירוט (₱4,750 / ~$79 ל‑3):</b> סירת Joiner ₱1,800 · דמי סביבה ₱450 · שנרקול Balicasag + מקלט ₱900 · מדריך מקומי (צבים) ₱250 · השכרת ציוד ₱450 · אוכל אופציונלי ₱450-₱600'},
+   {i:'💬',v:'<b>הודעה לנהג (הצעת מחיר) — copy/paste:</b> "Hi! We are 3 people staying at Pyramid Beach Resort, Panglao. On August 3 we\'d like to do Balicasag Island hopping — sea turtles, snorkeling, and the marine sanctuary. Can you arrange the boat (joiner is fine) plus transport to/from our hotel? Please send your full price including environmental and sanctuary fees, guide, and gear rental, and the pickup time. Thank you!"'},
+   {i:'💵',v:'עלות היום: Balicasag (Kim joiners) ₱3,600 + הסעה ₱400 ≈ ~$70 · אוכל בנפרד'},
+ ]},
+ {d:'4',m:'אוג',color:C.bohol,loc:'Bohol / Panglao',summ:'יום מפלים',rows:[
+   {i:'💧',v:'<b>יום מפלים</b> · Ingkumhan Falls · Twin Falls · יום טבע'},
+   {i:'👤',v:'<b>צריך רק נהג</b> + אגרות קטנות · מדריך מקומי במפל אופציונלי (~₱200)'},
+   {i:'🚙',v:'<b>Dixon ₱2,500</b> (רכב+נהג בלבד · <a class="tel" href="tel:+639158047286">+63 915 804 7286</a>) · השוואת נהגים → לשונית הצעות · דמי כניסה משולמים באתר'},
+   {i:'💬',v:'<b>הודעה לנהג (הצעת מחיר) — copy/paste:</b> "Hi! We are a family of 3 staying at Pyramid Beach Resort, Panglao. On August 4 we\'d like a waterfalls day — Ingkumhan Falls and Twin Falls, a relaxed nature day. Could you send your price (driver + entrance and parking fees), pickup time, and how long the trip takes? Pickup from our hotel. Thank you!"'},
+   {i:'💵',v:'<b>עלות היום (~$53):</b> נהג Dixon ₱2,500 + כניסות מפלים (Twin/Ingkumhan) ₱250-750 · + אוכל ~$45'},
+ ]},
+ {d:'5',m:'אוג',color:C.bohol,loc:'Bohol / Panglao',summ:'יום חופשי · בריכה/ספא',rows:[
+   {i:'🧘',v:'<b>יום חופשי</b> · בריכה · קפה · ספא · חוף קליל'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · עיסוי ~$20'},
+   {i:'🎒',v:'לארוז — מחר טיסה ל‑Boracay'},
+ ]},
+ {d:'6',m:'אוג',color:C.flight,loc:'Bohol → Boracay',summ:'טיסה 11:10 · Henann Palm (הגעה ~18:30)',rows:[
+   {i:'✈️',v:'<b>TAG → MNL</b> · Philippine Airlines PR2774 · 11:10 → 12:35 · 1ש 25ד<br>ממטוס PAL Express · 20 ק"ג מטען'},
+   {i:'⏱️',v:'עצירה ב‑Manila Ninoy Aquino T2 · 3ש 15ד'},
+   {i:'✈️',v:'<b>MNL T2 → MPH (Caticlan)</b> · Philippine Airlines PR2043 · 15:50 → 16:55 · 1ש 5ד<br>ממטוס PAL Express · 20 ק"ג מטען'},
+   {i:'🔖',v:'Booking ref: <b>ZL3ZJL</b> · מועד אחרון לצ\'ק‑אין: 01.8'},
+   {i:'🚖',v:'מ‑Caticlan: טריציקל לטרמינל המעבורת (~5 דק\') · סירה לבוראקאי (~15 דק\') · העברה למלון (~$25) · הגעה צפויה ~18:30-19:00'},
+   {i:'🟢',v:'<b>יום הגעה:</b> טיול ב‑White Beach · ארוחת ערב ליד Station 2 · ערב רגוע / חיי לילה (אופציונלי)'},
+   {i:'🍽️',v:'<b>מסעדות מומלצות בבוראקאי:</b> Hama (סושי) · Smoked (מומלץ מאוד) · Aria (איטלקי) · Aplaya (איטלקי)'},
+   {i:'💆',v:'<b>מסאז\':</b> Lahi Massage Spa'},
+   {i:'🧺',v:'<b>כביסה:</b> A-KON Laundry (מומלץ מאוד) · Lavada Laundry'},
+   {i:'🏨',v:'<b>Henann Palm Beach</b> · Station 2 (4 לילות · 6-10.8) <span class="pill paid">שולם $515 ($129/לילה)</span><br>צ\'ק‑אין 14:00 · הזמנה 1732782599'},
+   {i:'⚠️',v:'אין ביטול חינם',warn:1},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · פעילות ~$20 · עיסוי ~$30'},
+ ]},
+ {d:'7',m:'אוג',color:C.bora,loc:'Boracay',summ:'יום חוף מלא · White Beach',rows:[
+   {i:'🏖️',v:'<b>יום חוף מלא · White Beach</b> · שחייה · Happy hour · ברים ומוזיקה חיה · טיול שקיעה'},
+   {i:'💆',v:'עיסוי אחה"צ (Lahi Massage Spa)'},
+   {i:'🛵',v:'e‑trike / רגלית'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · פעילות ~$15 · עיסוי ~$35'},
+ ]},
+ {d:'8',m:'אוג',color:C.bora,loc:'Boracay',summ:'Paraw Sunset Sailing',rows:[
+   {i:'⭐',v:'<b>חובה: Paraw Sunset Sailing</b> · בוקר חופשי בחוף · הפלגת שקיעה 17:00-18:00 (מרהיב!) · ערב: D\'Mall ומסעדות'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · פעילות ~$60'},
+ ]},
+ {d:'9',m:'אוג',color:C.bora,loc:'Boracay',summ:'⭐ פעילויות מים (היום הפעיל)',rows:[
+   {i:'🪂',v:'<b>יום פעילויות מים — היום הפעיל</b> · לבחור: Parasailing ₱2,000-2,500 לאדם · ג\'ט סקי · Banana boat ₱300-400 · Clear boat ₱800-1,000 · שנרקול ₱800-1,000 · Helmet Diving'},
+   {i:'🪁',v:'<b>אופציה לבנים — קייטסרפינג (שיעור התנסות חד‑יומי):</b> 🥇 Freestyle Academy · 🥈 Greenyard · 🥉 Padayon'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · פעילות ~$120'},
+   {i:'🎒',v:'לארוז — מחר מעבר ל‑COAST'},
+ ]},
+ {d:'10',m:'אוג',color:C.bora,loc:'Boracay',summ:'החלפת מלון → COAST · קליל',rows:[
+   {i:'🟢',v:'<b>יום מעבר קליל</b> · בוקר רגוע · בריכה/חוף · התמקמות ב‑COAST'},
+   {i:'🛵',v:'מעבר קצר ב‑e‑trike מ‑Henann Palm ל‑COAST (שניהם Station 2)'},
+   {i:'🍨',v:'ערב: קינוח ב‑Coco Mama (מפורסם!)'},
+   {i:'🏨',v:'<b>COAST Boracay</b> · Station 2 (3 לילות · 10-13.8) <span class="pill pend">€464.61 ($154/לילה)</span><br>צ\'ק‑אין 14:00 · הזמנה 1726826984'},
+   {i:'📞',v:'<a class="tel" href="tel:+639178060652">+63 917 806 0652</a>'},
+   {i:'💎',v:'מדורג #1 בבוראקאי (Booking 9.5 · Agoda 9.6 · TripAdvisor)'},
+   {i:'⚠️',v:'ממתין לתשובת המלון: סידור מיטות ל‑3 (מיטה זוגית אחת — צריך תוספת)',warn:1},
+   {i:'💵',v:'עלות היום: אוכל ~$45'},
+ ]},
+ {d:'11',m:'אוג',color:C.bora,loc:'Boracay',summ:'Puka Beach · רגיעה',rows:[
+   {i:'🐚',v:'<b>יום רגיעה · Puka Beach</b> · טוקטוק ל‑Puka · רגיעה וצילומים · חזרה ל‑White Beach לשקיעה'},
+   {i:'🛵',v:'e‑trike ₱300-500 הלוך-חזור (~$5-8)'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · עיסוי ~$30'},
+ ]},
+ {d:'12',m:'אוג',color:C.bora,loc:'Boracay',summ:'ספא · יום אחרון',rows:[
+   {i:'💆',v:'<b>יום ספא ויום אחרון</b> · טיפול ספא (מומלץ Mandala Spa) · בריכה · café hopping · קניות'},
+   {i:'🌅',v:'השקיעה האחרונה בבוראקאי 🌅'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · ספא/עיסוי ~$70'},
+   {i:'🎒',v:'לארוז — מחר טיסה ל‑Cebu'},
+ ]},
+ {d:'13',m:'אוג',color:C.flight,loc:'Boracay → Cebu',summ:'טיסה 12:15 · Seda Ayala',rows:[
+   {i:'✈️',v:'<b>MPH (Caticlan) → CEB</b> · Philippine Airlines PR2360 · 12:15 → 13:15 · 1ש 0ד<br>ממטוס PAL Express · 20 ק"ג מטען'},
+   {i:'🔖',v:'Booking ref: <b>ZL3ZJL</b> · מועד אחרון לצ\'ק‑אין: 01.8'},
+   {i:'🚖',v:'אחרי: מונית/Grab ל‑Seda Ayala Center'},
+   {i:'🟢',v:'<b>יום מעבר:</b> בוקר רגוע · טיסה · ארוחת ערב וקניון'},
+   {i:'🏨',v:'<b>Seda Ayala Center Cebu</b> (2 לילות) <span class="pill pend">~$239</span><br>צ\'ק‑אין 14:00 · מחובר לקניון Ayala · הזמנה 1726812045 · <span class="fc">ביטול חינם עד 9.8</span>'},
+   {i:'✅',v:'מיטות: Twin + מיטה נוספת — <b>מובטח</b> (לא "בכפוף לזמינות") · כוח עליון: ביטול אפשרי עם מסמכים לפני ההגעה'},
+   {i:'⚠️',v:'הבריכה סגורה (שיפוץ Ayala Malls) — גישה חינם ל‑City Sports Club ממול',warn:1},
+ ]},
+ {d:'14',m:'אוג',color:C.seda,loc:'Cebu City',summ:'קניות · Ayala Mall',rows:[
+   {i:'🛍️',v:'<b>יום קניות ורגיעה</b> · Ayala Mall · IT Park · עיסוי · קניות זולות'},
+   {i:'🛵',v:'Grab / רגלית'},
+   {i:'💵',v:'עלות היום: אוכל ~$45 · פעילות ~$20 · עיסוי ~$30'},
+ ]},
+ {d:'15',m:'אוג',color:C.seda,loc:'Cebu → DXB',summ:'יציאה · טיסה 17:55',rows:[
+   {i:'🌅',v:'בוקר רגוע לפני היציאה · צ\'ק‑אאוט 12:00'},
+   {i:'🚖',v:'מונית לשדה התעופה מ‑Seda (~$8)'},
+   {i:'✈️',v:'<b>CEB → DXB</b> · Emirates EK338 · 17:55 → 01:15 · 11ש 20ד · עצירה ב‑Clark 1ש 30ד · מושבים 14A 14B 14C · 30 ק"ג'},
+   {i:'⏱️',v:'חניית ביניים ב‑DXB: 5 שעות'},
+ ]},
+ {d:'16',m:'אוג',color:C.flight,loc:'DXB → TLV · הביתה!',summ:'נחיתה 08:45',rows:[
+   {i:'✈️',v:'<b>DXB → TLV</b> · Emirates EK2120 / flydubai FZ1073 · 06:15 → 08:45 · מושבים 11A 11B 11C · 30 ק"ג'},
+   {i:'🏠',v:'נחיתה בתל אביב 08:45 · הטיול הושלם! 🎉'},
+ ]},
+];
+
+const BUDGET = [
+ {t:'טיסות בינלאומיות',s:'TLV⇄CEB · 3 נוסעים',amt:'$4,558',paid:true},
+ {t:'טיסות פנים (×3)',s:'Philippine Airlines · Bohol→Boracay→Cebu · ZL3ZJL',amt:'$672',paid:true},
+ {t:'מעבורת Oslob→Panglao',s:'12go',amt:'$52',paid:true,fc:'28.7'},
+ {t:'The Noble Cebu',s:'לילה 1',amt:'$67',paid:true,fc:'24.7'},
+ {t:'Pescadores Suites',s:'4 לילות',amt:'$243',paid:true,fc:'22.7'},
+ {t:'Pyramid Beach Resort',s:'6 לילות',amt:'$545',paid:true},
+ {t:'Henann Palm Beach',s:'4 לילות · אין ביטול חינם',amt:'$515',paid:true},
+ {t:'COAST Boracay',s:'3 לילות',amt:'$528',paid:true},
+ {t:'Seda Ayala Center',s:'2 לילות · חיוב 9.8',amt:'$239',paid:false,fc:'9.8'},
+];
+
+const HOTELS = [
+  {name:'The Noble Cebu', loc:'Cebu City · IT Park', color:'var(--cebu)',
+   dates:'26.7', nights:1, price:'$67.34', paid:true,
+   ref:'1670796188', platform:'Agoda', cancel:'2026-07-24',
+   tel:'+639171179360', notes:'לא מעשנים · מיטות נפרדות · קומה גבוהה'},
+  {name:'Pescadores Suites', loc:'Moalboal', color:'var(--moal)',
+   dates:'27-30.7', nights:4, price:'$243', paid:true,
+   ref:'1671641502', platform:'Agoda', cancel:'2026-07-22',
+   tel:'+63325056733', wa:'+639190799353',
+   notes:'ארוחת בוקר ל-3 · חדר ליד חניה (שקט יותר)'},
+  {name:'Pyramid Beach Resort', loc:'Panglao / Bohol', color:'var(--bohol)',
+   dates:'31.7–6.8', nights:6, price:'$545', paid:true,
+   ref:'1674376109', platform:'Booking.com', cancel:'2026-07-16',
+   notes:'לוודא: מיטות ל-3 · נוף לבריכה · העברה מהנמל'},
+  {name:'Henann Palm Beach', loc:'Boracay · Station 2', color:'var(--bora)',
+   dates:'6-10.8', nights:4, price:'$515', paid:true,
+   ref:'1732782599', platform:'Booking.com', cancel:null,
+   notes:'⚠️ אין ביטול חינם'},
+  {name:'COAST Boracay', loc:'Boracay · Station 2', color:'var(--bora)',
+   dates:'10-13.8', nights:3, price:'$528', paid:true,
+   ref:'1726826984', platform:'Agoda', cancel:'2026-06-25',
+   tel:'+639178060652',
+   notes:'מדורג #1 בבוראקאי · לוודא סידור מיטות ל-3'},
+  {name:'Seda Ayala Center', loc:'Cebu City · Ayala Mall', color:'var(--seda)',
+   dates:'13-15.8', nights:2, price:'~$239', paid:false,
+   ref:'1726812045', platform:'Agoda', cancel:'2026-08-09',
+   notes:'Twin + מיטה נוספת מובטח · בריכה סגורה — גישה ל-City Sports Club ממול · חיוב 9.8'},
+];
+
+function renderHotels(){
+  const w=document.getElementById('hotels');
+  // סיכום עלות כולל
+  const totalPaid=HOTELS.filter(h=>h.paid).length;
+  const totalPending=HOTELS.filter(h=>!h.paid).length;
+  const totalNights=HOTELS.reduce((s,h)=>s+h.nights,0);
+  w.innerHTML=`<div class="btot" style="margin-bottom:14px">
+    <div class="big">6 מלונות · ${totalNights} לילות</div>
+    <div class="lab"><span style="color:#a8f0c6">✅ ${totalPaid} שולמו</span> &nbsp;·&nbsp; <span style="color:#fde68a">⏳ ${totalPending} ממתינים לחיוב</span></div>
+  </div>`;
+  HOTELS.forEach(h=>{
+    const card=document.createElement('div');
+    card.style.cssText='background:#fff;border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(20,40,50,.07);border:1px solid var(--line);';
+    // header
+    const head=document.createElement('div');
+    head.style.cssText=`background:${h.color};color:#fff;padding:13px 14px;`;
+    const paidBadge=h.paid
+      ?'<span style="background:rgba(255,255,255,.25);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:700;margin-inline-start:7px">✅ שולם</span>'
+      :'<span style="background:rgba(255,220,100,.35);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:700;margin-inline-start:7px">⏳ לתשלום</span>';
+    head.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+      <div>
+        <div style="font-weight:800;font-size:1.05rem">${h.name} ${paidBadge}</div>
+        <div style="opacity:.9;font-size:.83rem;margin-top:3px">📍 ${h.loc}</div>
+      </div>
+      <div style="text-align:left;flex:0 0 auto">
+        <div style="font-weight:800;font-size:1.1rem">${h.price}</div>
+        <div style="opacity:.88;font-size:.75rem">${h.nights} לילות</div>
+      </div>
+    </div>`;
+    card.append(head);
+    // body rows
+    const body=document.createElement('div');
+    body.style.cssText='padding:10px 14px 12px;';
+    let rows='';
+    rows+=`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem"><span style="flex:0 0 26px;text-align:center">📅</span><span><b>${h.dates}</b> · ${h.nights} לילות</span></div>`;
+    rows+=`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem"><span style="flex:0 0 26px;text-align:center">🔖</span><span>הזמנה <b>${h.ref}</b> · ${h.platform}</span></div>`;
+    // cancellation
+    if(h.cancel){
+      const n=daysBetween(h.cancel);
+      const dd=new Date(h.cancel+'T00:00:00');
+      const dstr=dd.getDate()+'.'+(dd.getMonth()+1);
+      let cbg,ctxt;
+      if(n<0){cbg='#eceff1';ctxt='var(--muted)';}
+      else if(n<=7){cbg='var(--warnbg)';ctxt='var(--warn)';}
+      else{cbg='var(--okbg)';ctxt='var(--ok)';}
+      rows+=`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem"><span style="flex:0 0 26px;text-align:center">🗑️</span><span>ביטול חינם עד <b>${dstr}</b> <span style="background:${cbg};color:${ctxt};border-radius:6px;padding:1px 7px;font-size:.75rem;font-weight:700;margin-inline-start:4px">${n<0?'עבר':n===0?'היום!':'עוד '+n+'י'}</span></span></div>`;
+    } else {
+      rows+=`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem"><span style="flex:0 0 26px;text-align:center">⚠️</span><span style="color:var(--warn)"><b>אין ביטול חינם</b></span></div>`;
+    }
+    if(h.notes){
+      rows+=`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem"><span style="flex:0 0 26px;text-align:center">📝</span><span style="color:var(--muted)">${h.notes}</span></div>`;
+    }
+    // phone buttons
+    let btns='';
+    if(h.tel) btns+=`<a href="tel:${h.tel}" style="flex:1;text-align:center;background:#eef4f3;color:var(--cebu);border-radius:9px;padding:8px;font-weight:700;font-size:.84rem;text-decoration:none;min-width:40%">📞 חיוג</a>`;
+    if(h.wa) btns+=`<a href="https://wa.me/${h.wa.replace(/[^0-9]/g,'')}" style="flex:1;text-align:center;background:#eef4f3;color:var(--cebu);border-radius:9px;padding:8px;font-weight:700;font-size:.84rem;text-decoration:none;min-width:40%">💬 WhatsApp</a>`;
+    body.innerHTML=rows+(btns?`<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">${btns}</div>`:'');
+    card.append(body);
+    w.append(card);
+  });
+}
+
+const CONTACTS = [
+ {n:'נהגת Lisa',m:'העברה Cebu → Moalboal',tel:'',note:'לאשר מחדש שבוע לפני (19.7)'},
+ {n:'The Noble Cebu',m:'מלון · Cebu',tel:'+639171179360'},
+ {n:'Pescadores Suites',m:'מלון · Moalboal',tel:'+63325056733',wa:'+639190799353'},
+ {n:'Pyramid Beach Resort',m:'מלון · Bohol/Panglao',note:'דרך Booking.com · הזמנה 1674376109'},
+ {n:'COAST Boracay',m:'מלון · Station 2',tel:'+639178060652'},
+ {n:'Seda Ayala Center',m:'מלון · Cebu (Mr. Tio, מנהל)',tel:''},
+ {n:'נהגים אופציונליים — Bohol',m:'לסיורים הנוספים באי',note:'<br>⭐ <b>Dixon Alarbe</b> (סבלני, הכי זול — רכב+נהג ₱2,500 · לסגור 3 ימים מראש) <a class="tel" href="tel:+639158047286">+63 915 804 7286</a><br>⭐ נהג מומלץ (רכב ומזגן טובים) <a class="tel" href="tel:+639107525016">+63 910 752 5016</a><br>Louie Kenchi Cuber <a class="tel" href="tel:+639756009538">+63 975 600 9538</a><br>Kim <a class="tel" href="tel:+639125570861">+63 912 557 0861</a><br>Hector <a class="tel" href="tel:+639813919479">+63 981 391 9479</a><br>Kris <a class="tel" href="tel:+639762774940">+63 976 277 4940</a><br>Jim <a class="tel" href="tel:+639306826998">+63 930 682 6998</a>'},
+];
+
+/* dueISO = deadline date. status colors computed vs today */
+const TASKS = [
+ {id:'etravel',tt:'רישום eTravel (ויזה דיגיטלית)',td:'72 שעות לפני הטיסה · <a class="lnk" href="https://etravel.gov.ph/" target="_blank">etravel.gov.ph</a>',due:'2026-07-22'},
+ {id:'airalo',tt:'להפעיל סים AirAlo',td:'קוד <b>Mizrah15</b> — 15% הנחה · להפעיל לפני הנסיעה',due:'2026-07-24'},
+ {id:'lisa-transfer',tt:'לאשר עם Lisa — העברה Cebu→Moalboal',td:'שבוע מראש · נסיעה 27.7 · ₱2,500 (3 נוסעים) · לבקש שם נהג + נקודת מפגש.<br><b>הודעה:</b> "Hi Lisa! This is Dganit. Just confirming our private transfer from Cebu City to Moalboal on July 27. Pick-up: The Noble Cebu Hotel, 09:00 AM · 3 passengers · ₱2,500 total · Drop-off: Pescadores Suites Moalboal. Please confirm the driver\'s name and contact, and where we meet in the lobby. Thank you!"',due:'2026-07-19'},
+ {id:'lisa-kawasan',tt:'לאשר עם Lisa — Kawasan Canyoneering',td:'שבוע מראש · טיול 29.7 · ₱2,300 לאדם (3 נוסעים) · להזמין מקום.<br><b>הודעה:</b> "Hi Lisa! Confirming our Kawasan Canyoneering tour for July 29 (3 people). Small Group · Start 08:00-08:30 AM · 4-5 hours · ₱2,300 per person · Includes insurance, guide, helmet, vest, water, lunch. Please confirm pickup time and meeting point, and send the driver/guide\'s name and contact. Thank you!"',due:'2026-07-22'},
+ {id:'lisa-whaleshark',tt:'לאשר עם Lisa — כרישי לוויתן Oslob',td:'31.7 · קבוצה קטנה ₱1,900 לאדם · איסוף 03:00 · הורדה ב‑Oslob ferry terminal (Quartel Beach) למעבורת ל‑Panglao.<br><b>הודעה (מוכנה):</b> "Hi Lisa! Confirming the Oslob Whale Shark tour + transfer for July 31 for 3 people. SMALL group (₱1,900 pp) · Pickup 03:00 AM from Pescadores Suites Moalboal · Includes whale shark snorkeling. Afterwards please drop us at Quartel Beach, Oslob by 10:30 — we have the 11:30 Apekoptravel high-speed ferry to Momo Beach, Panglao. Please confirm availability, pickup time, and the guide/driver\'s name and contact. Thank you!"',due:'2026-07-24'},
+ {id:'coast4',tt:'לבטל COAST 4 לילות (אופציה 1)',td:'הזמנה 1726810727 · באגודה',due:'2026-06-20'},
+ {id:'coast7',tt:'לבטל COAST 7 לילות (אופציה 3)',td:'הזמנה 1726825666 · באגודה',due:'2026-06-20'},
+ {id:'coastchg',tt:'COAST — חיוב אוטומטי €464.61',td:'לוודא תשובת מלון + סידור מיטות לפני החיוב',due:'2026-06-24'},
+ {id:'coast3',tt:'סוף ביטול חינם — COAST Boracay 3 לילות (25.6)',td:'ההזמנה שנשארת · מ‑26.6 רק 50% החזר',due:'2026-06-25'},
+ {id:'scentcxl',tt:'לבטל את Scent of Green Papaya — עברנו ל‑Pyramid',td:'לבטל לפני 9.7 כדי להימנע מחיוב · אישור 6610982745',due:'2026-07-09'},
+ {id:'pyramidfc',tt:'סוף ביטול חינם — Pyramid Beach Resort (16.7)',td:'ההזמנה החדשה שלנו · הזמנה 1674376109 · אחרי 16.7 ללא ביטול חינם',due:'2026-07-16'},
+ {id:'pesccxl',tt:'סוף ביטול חינם — Pescadores Suites (22.7)',td:'כבר שולם $243 · להימנע מחיוב No‑Show',due:'2026-07-22'},
+ {id:'ferrycxl',tt:'סוף ביטול חינם — מעבורת Oslob→Panglao (28.7)',td:'12go · הזמנה ABE09387 · $52',due:'2026-07-28'},
+ {id:'noblecxl',tt:'סוף ביטול חינם — The Noble Cebu (24.7)',td:'כבר שולם $67',due:'2026-07-24'},
+ {id:'sedachg',tt:'Seda Ayala — חיוב אוטומטי ₱14,643',td:'לוודא תשובת מלון + סידור מיטות',due:'2026-08-09'},
+ {id:'sedacxl',tt:'סוף ביטול חינם — Seda Ayala Center (9.8)',td:'הזמנה 1726812045 · אחרי 9.8 חיוב',due:'2026-08-09'},
+];
+
+/* ===================== RENDER ===================== */
+function el(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+
+const HE_DOW=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳']; // 0=ראשון .. 6=שבת
+const HE_DOW_FULL=['יום ראשון','יום שני','יום שלישי','יום רביעי','יום חמישי','יום שישי','שבת'];
+const MON_IDX={'יול':6,'אוג':7}; // חודשים (0-מבוסס) לשנת 2026
+function dowIdx(day){
+  const mi=MON_IDX[day.m]; if(mi===undefined) return -1;
+  return new Date(2026,mi,parseInt(day.d,10)).getDay();
+}
+function weekday(day){const i=dowIdx(day);return i<0?'':HE_DOW[i];}
+function weekdayFull(day){const i=dowIdx(day);return i<0?'':HE_DOW_FULL[i];}
+const HOTEL_BY={
+ '25יול':'✈️ טיסת לילה','26יול':'🏨 The Noble Cebu',
+ '27יול':'🏨 Pescadores Suites','28יול':'🏨 Pescadores Suites','29יול':'🏨 Pescadores Suites','30יול':'🏨 Pescadores Suites',
+ '31יול':'🏨 Pyramid Beach Resort',
+ '1אוג':'🏨 Pyramid Beach Resort','2אוג':'🏨 Pyramid Beach Resort','3אוג':'🏨 Pyramid Beach Resort','4אוג':'🏨 Pyramid Beach Resort','5אוג':'🏨 Pyramid Beach Resort',
+ '6אוג':'🏨 Henann Palm Beach','7אוג':'🏨 Henann Palm Beach','8אוג':'🏨 Henann Palm Beach','9אוג':'🏨 Henann Palm Beach',
+ '10אוג':'🏨 COAST Boracay','11אוג':'🏨 COAST Boracay','12אוג':'🏨 COAST Boracay',
+ '13אוג':'🏨 Seda Ayala Center','14אוג':'🏨 Seda Ayala Center',
+ '15אוג':'✈️ טיסת לילה הביתה','16אוג':'🏠 הביתה'
+};
+function hotelFor(day){return HOTEL_BY[day.d+day.m]||'';}
+function renderDays(){
+  const wrap=document.getElementById('days');
+  DAYS.forEach((day,idx)=>{
+    const card=el('div','day');
+    const head=el('div','dhead');
+    head.style.borderInlineStartColor=day.color;
+    const num=el('div','dnum',`<span class="d">${day.d}</span><span class="m">${day.m}</span><span class="w">${weekday(day)}</span>`);
+    num.style.background=day.color;
+    const title=el('div','dtitle',`<div class="loc">${day.loc}</div><div class="summ"><b style="color:${day.color}">${weekdayFull(day)} · ${day.d} ${day.m}</b> — ${day.summ}</div>${hotelFor(day)?`<div class="hotelline">${hotelFor(day)}</div>`:''}`);
+    const arrow=el('div','arrow','▾');
+    head.append(num,title,arrow);
+    const body=el('div','body');
+    day.rows.forEach(r=>{
+      const row=el('div','row'+(r.warn?' ':''));
+      row.innerHTML=`<div class="lbl">${r.i}</div><div class="val${r.warn?' ':''}">${r.v}</div>`;
+      if(r.warn){row.querySelector('.val').classList.add('warnval');}
+      body.append(row);
+    });
+    head.addEventListener('click',()=>card.classList.toggle('open'));
+    card.append(head,body);
+    wrap.append(card);
+  });
+}
+
+function renderBudget(){
+  const w=document.getElementById('budget');
+  BUDGET.forEach(b=>{
+    const it=el('div','bitem');
+    const badge=b.paid?'<span class="pill paid">שולם</span>':'<span class="pill cash">לתשלום</span>';
+    const fc=b.fc?` · <span class="fc">ביטול חינם עד ${b.fc}</span>`:'';
+    it.innerHTML=`<div class="bn"><div class="t">${b.t} ${badge}</div><div class="s">${b.s}${fc}</div></div>
+      <div class="amt">${b.amt}</div>`;
+    const dot=el('span');dot.style.cssText='width:10px;height:10px;border-radius:50%;flex:0 0 auto;';
+    dot.style.background = b.paid?'var(--ok)':'var(--pend)';
+    it.prepend(dot);
+    w.append(it);
+  });
+}
+
+function renderContacts(){
+  const w=document.getElementById('contacts');
+  CONTACTS.forEach(c=>{
+    const card=el('div','contact');
+    let acts='';
+    if(c.tel) acts+=`<a href="tel:${c.tel}">📞 חיוג</a>`;
+    if(c.mob) acts+=`<a href="tel:${c.mob}">📱 נייד</a>`;
+    if(c.wa) acts+=`<a href="https://wa.me/${c.wa.replace(/[^0-9]/g,'')}">💬 WhatsApp</a>`;
+    if(c.mail) acts+=`<a href="mailto:${c.mail}">✉️ מייל</a>`;
+    card.innerHTML=`<h3>${c.n}</h3><div class="meta">${c.m}${c.note?' · '+c.note:''}</div>
+      ${acts?`<div class="acts">${acts}</div>`:''}`;
+    w.append(card);
+  });
+}
+
+function daysBetween(iso){
+  const today=new Date();today.setHours(0,0,0,0);
+  const d=new Date(iso+'T00:00:00');
+  return Math.round((d-today)/86400000);
+}
+function dueBadge(iso){
+  const n=daysBetween(iso);
+  const dd=new Date(iso+'T00:00:00');
+  const lab=dd.getDate()+'.'+(dd.getMonth()+1);
+  if(n<0) return {cls:'gray',txt:lab+' (עבר)'};
+  if(n===0) return {cls:'red',txt:'היום!'};
+  if(n<=7) return {cls:'red',txt:lab+' · עוד '+n+'י'};
+  if(n<=21) return {cls:'amber',txt:lab+' · עוד '+n+'י'};
+  return {cls:'green',txt:lab+' · עוד '+n+'י'};
+}
+
+let store={};
+try{store=JSON.parse(localStorage.getItem('ph2026tasks')||'{}');}catch(e){store={};}
+function saveStore(){try{localStorage.setItem('ph2026tasks',JSON.stringify(store));}catch(e){}}
+
+function renderTasks(){
+  const w=document.getElementById('tasks');
+  w.innerHTML='';
+  // לא‑בוצעו לפי תאריך, אחר כך בוצעו לתחתית
+  const sorted=[...TASKS].sort((a,b)=>{
+    const da=!!store[a.id], db=!!store[b.id];
+    if(da!==db) return da?1:-1;
+    return new Date(a.due)-new Date(b.due);
+  });
+  let urgent=0, doneSepAdded=false;
+  sorted.forEach(t=>{
+    const done=!!store[t.id];
+    if(done && !doneSepAdded){ w.append(el('div','donesep','בוצעו')); doneSepAdded=true; }
+    const b=dueBadge(t.due);
+    const n=daysBetween(t.due);
+    if(n>=0&&n<=10&&!done)urgent++;
+    const card=el('div','task'+(done?' done':''));
+    const cb=el('input');cb.type='checkbox';cb.checked=done;
+    cb.addEventListener('change',()=>{store[t.id]=cb.checked;saveStore();renderTasks();});
+    const tx=el('div','tx',`<div class="tt">${t.tt}</div><div class="td">${t.td}</div>`);
+    const due=el('div','due '+b.cls,b.txt);
+    card.append(cb,tx,due);
+    w.append(card);
+  });
+  const banner=document.getElementById('urgentBanner');
+  if(urgent>0){banner.style.display='';banner.textContent='⚠️ '+urgent+' משימות דחופות ב‑10 הימים הקרובים';}
+  else{banner.style.display='none';}
+}
+
+/* ===== CASH ENVELOPES ===== */
+const PHP_RATE=57; // ₱ ל‑$1 (משוער)
+// פריט: [תווית, סכום$, ניתן-בכרטיס?] — 1 = אפשר גם בכרטיס אשראי
+const CASH=[
+ {dest:'Cebu — הגעה',dates:'26.7',color:C.cebu,paid:'The Noble + טיסות בינלאומיות (כרטיס)',fx:'קניון Ayala Center — Rustans (קומה תחתונה) / DROP BY FOREX · השער הטוב באזור. בשדה רק סכום קטן',days:[
+   {d:'26.7',items:[['העברה משדה (מונית לבנה)',8],['אוכל',45,1]]},
+ ]},
+ {dest:'Moalboal',dates:'27-30.7',color:C.moal,paid:'Pescadores (כרטיס)',fx:'אפשרויות מעטות ושער פחות טוב — עדיף להמיר בסבו מראש, או למשוך ב‑ATM (מוגבל, עלול להתרוקן)',note:'אופציונלי: מדריך סרדינים ~$30 (28.7)',days:[
+   {d:'27.7',items:[['העברה — נהג Lisa (מזומן)',42],['אוכל',35,1],['עיסוי',30]]},
+   {d:'28.7',items:[['אוכל',35,1]]},
+   {d:'29.7',items:[['Kawasan Canyoneering',96],['אוכל',35,1]]},
+   {d:'30.7',items:[['אוכל',35,1],['עיסוי',30]]},
+ ]},
+ {dest:'Bohol / Panglao',dates:'31.7-5.8',color:C.bohol,paid:'Pyramid + מעבורת $52 + טיסות (אונליין/כרטיס)',fx:'Tagbilaran City — שער טוב + הרבה ATMים (עדיף על Alona/Panglao שם השער 1.5-2% פחות)',note:'כרישי לוויתן: $123 פרטי / $96 קבוצתי',days:[
+   {d:'31.7',items:[['כרישי לוויתן (חבילת Lisa)',123],['העברות מקומיות',73],['אוכל',45,1]]},
+   {d:'1.8',items:[['חוף/פעילות',20],['אוכל',45,1],['עיסוי',30]]},
+   {d:'2.8',items:[['Countryside — נהג (Dixon)',44],['כניסות: טרסיירים+Chocolate+שייט Loboc+זיפליין',113],['אוכל',45,1]]},
+   {d:'3.8',items:[['Balicasag — סירה + הסעה (Kim joiners)',70],['אוכל',45,1]]},
+   {d:'4.8',items:[['Waterfalls — נהג (Dixon)',44],['כניסות מפלים',9],['אוכל',45,1]]},
+   {d:'5.8',items:[['אוכל',45,1],['עיסוי',20]]},
+ ]},
+ {dest:'Boracay',dates:'6-12.8',color:C.bora,paid:'Henann + COAST (כרטיס)',fx:'מומלץ: NIKKO FOREX · ועוד ממירים ב‑D\'Mall ולאורך White Beach + ATMים — כדאי להשוות שער',days:[
+   {d:'6.8',items:[['העברה משדה',25],['פעילות/ערב',20],['אוכל',45,1],['עיסוי',30]]},
+   {d:'7.8',items:[['חוף / Happy hour',15,1],['עיסוי (Lahi Spa)',35],['אוכל',45,1],['e-trike',8]]},
+   {d:'8.8',items:[['Paraw Sunset Sailing',60],['אוכל',45,1]]},
+   {d:'9.8',items:[['פעילויות מים',120],['אוכל',45,1]]},
+   {d:'10.8',items:[['e-trike + Coco Mama',8],['אוכל',45,1]]},
+   {d:'11.8',items:[['Puka Beach (טוקטוק)',8],['עיסוי',30],['אוכל',45,1]]},
+   {d:'12.8',items:[['ספא (Mandala)',70,1],['אוכל',45,1]]},
+ ]},
+ {dest:'Cebu — סיום',dates:'13-15.8',color:C.seda,paid:'Seda (כרטיס)',fx:'קניון Ayala Center — Rustans / DROP BY FOREX (מחובר למלון) · השער הטוב באזור',days:[
+   {d:'13.8',items:[['מונית/Grab',16,1],['אוכל',45,1],['עיסוי',30]]},
+   {d:'14.8',items:[['Grab/קניות',8,1],['קניות/פעילות',20,1],['אוכל',45,1],['עיסוי',30]]},
+   {d:'15.8',items:[['מונית לשדה',8],['אוכל',45,1]]},
+ ]},
+];
+function php(usd){return '₱'+(Math.round(usd*PHP_RATE/100)*100).toLocaleString();}
+function phpItem(usd){return '₱'+(Math.round(usd*PHP_RATE/10)*10).toLocaleString();}
+function renderCash(){
+  const w=document.getElementById('cash');
+  let grand=0;
+  CASH.forEach(seg=>{
+    let segTot=0;
+    const card=el('div','cdest');
+    const head=el('div','chead');head.style.background=seg.color;
+    let daysHtml='';
+    seg.days.forEach(day=>{
+      let dayTot=0;
+      let its='';
+      day.items.forEach(([lbl,amt,cc])=>{dayTot+=amt;its+=`<div class="ci"><span>${lbl}${cc?' <span class="cc">💳</span>':''}</span><span>$${amt} · ${phpItem(amt)}</span></div>`;});
+      segTot+=dayTot;
+      daysHtml+=`<div class="cday"><div class="cdh"><span class="dt">${day.d}</span><span>$${dayTot} · ${php(dayTot)}</span></div>${its}</div>`;
+    });
+    grand+=segTot;
+    head.innerHTML=`<div><div class="ct">${seg.dest}</div><div class="cs">${seg.dates}</div></div>
+      <div class="camt">$${segTot}<span class="php">${php(segTot)}</span></div>`;
+    card.append(head);
+    card.insertAdjacentHTML('beforeend',`<div class="cpaid">✓ שולם בכרטיס: ${seg.paid}</div>`);
+    if(seg.fx) card.insertAdjacentHTML('beforeend',`<div class="cfx">💱 ${seg.fx}</div>`);
+    card.insertAdjacentHTML('beforeend',daysHtml);
+    if(seg.note) card.insertAdjacentHTML('beforeend',`<div class="cnote">⚠️ ${seg.note}</div>`);
+    w.append(card);
+  });
+  document.getElementById('cashGrand').textContent='~$'+grand.toLocaleString()+' · ~'+php(grand);
+}
+
+/* ===== QUOTE COMPARISON ===== */
+const QTOURS=[
+ {id:'countryside',name:'Countryside Tour',date:'2.8',note:'רק נהג · מדריך כלול בכניסה',info:'דמי כניסה (משולם באתר): טרסיירים ₱150-175 · Chocolate Hills ₱100 · שייט Loboc (בופה) ₱1,000-1,200 · זיפליין ₱700 (לאדם) · <b>אומדן כניסות: לאדם ~₱2,000-2,150 · ל‑3 ~₱6,000-6,450</b> · נהג בנפרד',color:C.bohol,defaults:[{n:'Dixon Alarbe +63 915 804 7286',q:'₱2,500',rank:1,note:'רכב+נהג בלבד · כניסות בנפרד'},{n:'Hector +63 981 391 9479',q:'₱4,000',rank:4,note:'אמר "אין תוספות, בלי אוכל" — לוודא אם הכניסות כלולות ב‑₱4,000 או בנפרד'},{n:'Kim +63 912 557 0861',q:'₱3,000',rank:3,note:'רכב+נהג בלבד · כניסות בנפרד (טרסיירים 175, Chocolate 100, שייט Loboc 1,000, זיפליין 700 לאדם)'},{n:'Kris +63 976 277 4940',q:'₱2,800',rank:2,note:'רכב ₱2,800 · all-in עם כל הכניסות ₱9,250 ל‑3 (כולל שייט Loboc וזיפליין) · עוזר בתשלום הכניסות'}]},
+ {id:'balicasag',name:'Balicasag Island',date:'3.8',note:'סיור סירה · מדריך חובה כלול באגרות',info:'חבילת סירה כוללת הכל (סירה + מדריך חובה + אגרות + מסכה) · <b>אומדן: לאדם ~₱1,200 (joiners) · ל‑3 ~₱3,600-5,650</b> לפי הספק · מביאים מסכות = חוסך ₱150/אדם',color:C.bohol,defaults:[{n:'Dixon Alarbe +63 915 804 7286',q:'~₱6,000 ל‑3',rank:4,note:'סירה ₱3,000 + אגרות ~₱1,000/אדם (כניסה 300, מסכה 150, סנפירים 150, שנרקול 300, Virgin Island 100) · GoPro 1,000 אופציונלי'},{n:'Hector +63 981 391 9479',q:'₱5,650',rank:3,note:'הכל כלול (סירה+מדריך+כל האגרות+מסכה) · בלי אוכל · אין תוספות · ✓ אושר'},{n:'Kim +63 912 557 0861',q:'₱3,600',rank:1,note:'joiners ₱1,200/אדם (הכל כלול) · או פרטי ₱3,500+אגרות (~₱5,150) · הסעה לא כלולה: מ‑Alona ₱400 ל‑3 / מנמל Tagbilaran ₱1,400'},{n:'Kris +63 976 277 4940',q:'₱4,750 ל‑3',rank:2,note:'סירה פרטית ₱2,500 + רכב ₱600 + אגרות ₱1,650 (כניסה+מדריך+סביבה 300, ציוד 150, Virgin 100 לאדם)'}]},
+ {id:'waterfalls',name:'Waterfalls Day',date:'4.8',note:'רק נהג · אגרות בנפרד',info:'דמי כניסה (משולם באתר): Twin Falls ₱50-150/אדם · Ingkumhan ₱20-100/אדם (לפי הנהג) · <b>אומדן כניסות: לאדם ~₱100-250 · ל‑3 ~₱400-750</b> · נהג בנפרד ~₱2,500-2,800',color:C.bohol,defaults:[{n:'Dixon Alarbe +63 915 804 7286',q:'₱2,500',rank:1,note:'רכב+נהג בלבד · כניסות בנפרד'},{n:'Hector +63 981 391 9479',q:'₱5,000',rank:4,note:'אמר "אין תוספות, בלי אוכל" — לוודא אם הכניסות כלולות ב‑₱5,000 או בנפרד'},{n:'Kim +63 912 557 0861',q:'₱3,460',rank:3,note:'כולל אגרות (Twin 50, Ingkumhan 20, מדריך 200, חניה 50)'},{n:'Kris +63 976 277 4940',q:'₱2,800',rank:2,note:'רכב ₱2,800 · all-in עם כניסות ₱3,550 ל‑3 (Twin 150/אדם, Ingkumhan 100/אדם)'}]},
+];
+let quoteStore={};
+try{quoteStore=JSON.parse(localStorage.getItem('ph2026quotes_v2')||'{}');}catch(e){quoteStore={};}
+function saveQuotes(){try{localStorage.setItem('ph2026quotes_v2',JSON.stringify(quoteStore));}catch(e){}}
+const LISA=[
+ {d:'27.7',item:'העברה Cebu→Moalboal',price:'₱2,500 (~$42) · סה"כ ל‑3 (רכב פרטי)'},
+ {d:'29.7',item:'Kawasan Canyoneering',price:'₱1,900-2,300 לאדם · ל‑3: ₱5,700-6,900 (~$96-120)'},
+ {d:'31.7',item:'כרישי לוויתן Oslob',price:'קבוצתי ₱5,700 / פרטי ₱7,200 · סה"כ ל‑3 (~$96-123)'},
+];
+function renderQuotes(){
+  const w=document.getElementById('quotes');
+  w.innerHTML='';
+  // Lisa — מחירים ידועים
+  const lcard=el('div','qtour');
+  const lhead=el('div','qhead');lhead.style.background=C.moal;
+  lhead.innerHTML='<span class="ct">Lisa — העברות וסיורים</span><span class="cs">מחיר ידוע</span>';
+  lcard.append(lhead);
+  const lbody=el('div','qbody');
+  LISA.forEach((it,i)=>{
+    const saved=(quoteStore['lisa']||[])[i]||{};
+    const r=el('div','qrow'+(saved.chosen?' chosen':''));
+    const cb=el('input','qcb');cb.type='checkbox';cb.checked=!!saved.chosen;cb.title='סוכם';
+    cb.addEventListener('change',()=>{if(!quoteStore['lisa'])quoteStore['lisa']=[];quoteStore['lisa'][i]={chosen:cb.checked};saveQuotes();r.classList.toggle('chosen',cb.checked);});
+    const txt=el('div','lisatxt',`<b>${it.d}</b> · ${it.item}<br><span class="lisaprice">${it.price}</span>`);
+    r.append(cb,txt);
+    lbody.append(r);
+  });
+  lcard.append(lbody);
+  w.append(lcard);
+  w.append(el('div','qsub','נהגים בבוהול — השוואת הצעות'));
+  QTOURS.forEach(t=>{
+    const saved=quoteStore[t.id]||[];
+    const card=el('div','qtour');
+    const head=el('div','qhead');head.style.background=t.color;
+    head.innerHTML=`<div><div class="ct">${t.name}</div>${t.note?`<div class="qnote">${t.note}</div>`:''}</div><span class="cs">${t.date}</span>`;
+    card.append(head);
+    if(t.info) card.insertAdjacentHTML('beforeend',`<div class="qinfo">💡 ${t.info}</div>`);
+    const body=el('div','qbody');
+    // הנבחר עולה לראש
+    const order=[0,1,2,3].sort((a,b)=>{
+      const ca=!!(saved[a]&&saved[a].chosen), cbb=!!(saved[b]&&saved[b].chosen);
+      if(ca!==cbb)return ca?-1:1;
+      const ra=(t.defaults[a]&&t.defaults[a].rank)||99;
+      const rb=(t.defaults[b]&&t.defaults[b].rank)||99;
+      if(ra!==rb)return ra-rb;
+      return a-b;
+    });
+    const MEDAL={1:'🥇',2:'🥈',3:'🥉'};
+    order.forEach(i=>{
+      const row=saved[i]||{};
+      const def=t.defaults[i]||{};
+      const r=el('div','qrow'+(row.chosen?' chosen':''));
+      const cb=el('input','qcb');cb.type='checkbox';cb.checked=!!row.chosen;cb.title='נבחר';
+      const col=el('div','qnamecol');
+      const name=el('input','qname');name.type='text';name.placeholder='שם / טלפון נהג';
+      name.value=(row.name!=null?row.name:(def.n||''));
+      const noteTxt=(row.note!=null?row.note:(def.note||''));
+      const medal=def.rank?(MEDAL[def.rank]||('#'+def.rank)):'';
+      const noteEl=el('div','qrnote');
+      noteEl.innerHTML=(medal?'<b class="qmedal">'+medal+'</b> ':'')+noteTxt;
+      if(!medal&&!noteTxt)noteEl.style.display='none';
+      col.append(name,noteEl);
+      const price=el('input','qprice');price.type='text';price.placeholder='₱ מחיר';price.value=(row.quote!=null?row.quote:(def.q||''));
+      function ensureRow(){if(!quoteStore[t.id])quoteStore[t.id]=[];if(!quoteStore[t.id][i])quoteStore[t.id][i]={};return quoteStore[t.id][i];}
+      name.addEventListener('input',()=>{ensureRow().name=name.value;saveQuotes();});
+      price.addEventListener('input',()=>{ensureRow().quote=price.value;saveQuotes();});
+      cb.addEventListener('change',()=>{ensureRow().chosen=cb.checked;saveQuotes();renderQuotes();});
+      r.append(cb,col,price);
+      body.append(r);
+    });
+    card.append(body);
+    w.append(card);
+  });
+}
+
+/* tabs */
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('section.view').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('v-'+btn.dataset.v).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+renderDays();renderBudget();renderCash();renderContacts();renderTasks();renderQuotes();renderHotels();
+</script>
+</body>
+</html>
